@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#6B1532">
-<title>CEIBA · Agenda Territorial</title>
+<title>SAET Bienestar · Agenda Territorial</title>
 <link rel="icon" href="logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@ svg.ic{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-wid
 .side{background:linear-gradient(175deg,var(--g700),var(--g900));color:#fff;padding:22px 16px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh;border-radius:0 28px 28px 0;z-index:30}
 .marca{display:flex;align-items:center;gap:11px;padding:4px 8px 20px}
 .marca img{width:42px;height:42px;border-radius:13px;box-shadow:0 0 0 1px rgba(235,221,195,.35)}
-.marca b{font-family:'Fraunces',serif;font-size:21px;letter-spacing:.06em;display:block;line-height:1}
+.marca b{font-family:'Fraunces',serif;font-size:19px;letter-spacing:.02em;display:block;line-height:1.05;white-space:nowrap}
 .marca span{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--oro2);opacity:.85}
 .nav{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:14px;color:#F3DDE3;font-weight:500;width:100%;text-align:left;transition:.15s}
 .nav:hover{background:rgba(255,255,255,.08);color:#fff}
@@ -169,9 +169,9 @@ td{padding:11px 10px;border-top:1px solid var(--linea);vertical-align:middle}
 /* ═══════════ CONFIGURACIÓN ═══════════
    Pega aquí la URL de tu aplicación web de Apps Script (termina en /exec).
    Si la dejas vacía, la app abre en MODO DEMO con datos de ejemplo. */
-const API_URL = 'https://script.google.com/macros/s/AKfycbwiJDS9pmv1ScMS7S32iHDQGkvHNNGh3eJp5s8J2-y-8Cr-SJ8gye7P_uJuuvZ0kHYPhw/exec';
+const API_URL = '';
 
-const NOMBRE = 'CEIBA', LEMA = 'Agenda Territorial';
+const NOMBRE = 'SAET Bienestar', LEMA = 'Agenda Territorial', SIGLA = 'Sistema de Agenda y Evidencias Territoriales';
 const DEMO = !API_URL;
 const LOGO = "data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E %3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%238A1F45%22/%3E%3Cstop offset=%221%22 stop-color=%22%234F0E25%22/%3E%3C/linearGradient%3E%3C/defs%3E %3Crect width=%2264%22 height=%2264%22 rx=%2218%22 fill=%22url%28%23g%29%22/%3E %3Cg fill=%22none%22 stroke=%22%23EBDDC3%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E %3Cpath d=%22M32 52V31%22 stroke-width=%224.5%22/%3E %3Cpath d=%22M32 36c0-9-9-8-16-15M32 33c-1-8-5-12-8-19M32 32V11M32 33c1-8 5-12 8-19M32 36c0-9 9-8 16-15%22 stroke-width=%222.6%22/%3E %3Cpath d=%22M21 52h22%22 stroke-width=%222.6%22/%3E %3C/g%3E %3Cg fill=%22%23C9A56A%22%3E%3Ccircle cx=%2216%22 cy=%2221%22 r=%223.6%22/%3E%3Ccircle cx=%2224%22 cy=%2213.5%22 r=%223.6%22/%3E%3Ccircle cx=%2232%22 cy=%2210.5%22 r=%223.6%22/%3E%3Ccircle cx=%2240%22 cy=%2213.5%22 r=%223.6%22/%3E%3Ccircle cx=%2248%22 cy=%2221%22 r=%223.6%22/%3E%3C/g%3E %3C/svg%3E ";
 const TIPOS = ['Visita domiciliaria','Asamblea informativa','Operativo de pago','Módulo de atención','Censo / registro','Reunión de trabajo','Difusión','Capacitación','Otra'];
@@ -291,7 +291,7 @@ function pantallaAcceso(modo){
  <div class="portada"><svg class="deco" viewBox="0 0 64 64">${CEIBA}</svg>
   <div class="marca"><img src="${LOGO}" alt=""><div><b>${NOMBRE}</b><span>${LEMA}</span></div></div>
   <div class="lema"><h1>El territorio, organizado desde la raíz.</h1><p>Agenda semanal, tareas, evidencias y visitas de las cinco regiones en un solo lugar.</p></div>
-  <div class="sm lema" style="color:var(--oro2)">5 regiones · 22 zonas · monitores · servidores de la nación</div></div>
+  <div class="sm lema" style="color:var(--oro2)">${SIGLA}</div></div>
  <div class="forma"><div id="forma"></div></div></div>`;
  modo==='registro'?formaRegistro():formaLogin();
 }
@@ -625,7 +625,7 @@ function libroExcel(hojas){ // {Nombre:[{col:valor}]}
 }
 function excel(tabla,b){ocupado(b,async()=>{
  const d=await api('exportar',{},120000),hojas=tabla==='Todo'?d:{[tabla]:d[tabla]};
- const a=document.createElement('a');a.href=URL.createObjectURL(libroExcel(hojas));a.download=`${NOMBRE}_${tabla}_${hoy()}.xlsx`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+ const a=document.createElement('a');a.href=URL.createObjectURL(libroExcel(hojas));a.download=`${NOMBRE.replace(/\s+/g,'_')}_${tabla}_${hoy()}.xlsx`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
  toast('Descarga lista')})}
 
 /* ═══════════ Perfil ═══════════ */
